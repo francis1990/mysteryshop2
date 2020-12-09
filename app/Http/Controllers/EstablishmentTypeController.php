@@ -19,7 +19,7 @@ class EstablishmentTypeController extends Controller
      */
     public function index()
     {
-        return EstablishmentTypeResource::collection(EstablishmentType::all());
+        return EstablishmentTypeResource::collection(EstablishmentType::paginate());
     }
 
     /**
@@ -71,5 +71,10 @@ class EstablishmentTypeController extends Controller
     {
         return new Response($establishmentType->delete());
 
+    }
+
+    public function getAll()
+    {
+        return EstablishmentTypeResource::collection(EstablishmentType::orderBy('name')->get());
     }
 }

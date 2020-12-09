@@ -1,131 +1,92 @@
 <template>
-    <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Title</h3>
+    <div class="card card-info">
+        <!-- Carga de datos -->
+        <div v-if="!loaded" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
 
-                <!-- <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip"
-                        title="Collapse">
-                        <i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip"
-                        title="Remove">
-                        <i class="fas fa-times"></i></button>
-                </div> -->
+        <div class="card-header">
+            <h4 class="card-title font-weight-bold">Client
+                <span v-show="clients.total" class="right badge badge-dark">{{ clients.total }}</span>
+            </h4>
+        </div>
+        <div class="card-body">
+            <button id="show-modal" class="btn btn-primary btn-sm pull-right" @click="showForm('add')">Add
+            </button>
+            <client-form-component @loadData="getClients(1)" ref="formClient"></client-form-component>
+            <client-details-component ref="detailsClient"></client-details-component>
+            <div v-if="clients.data.length || !loaded" class="table-responsive pt-2">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>N. contract</th>
+                        <th>Enterprise</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <client-item-component
+                        v-for="item in clients.data"
+                        v-bind:client="item"
+                        v-bind:key="item.id"
+                        @loadData="getClients(1)"
+                        @details="showDetails(item)"
+                        @updateClient="showForm('update',item)">
+                    </client-item-component>
+                    </tbody>
+                </table>
+                <pagination :limit="5" :data="clients" @pagination-change-page="getClients"></pagination>
             </div>
-            <div class="card-body">
 
-                <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Responsive Hover Table</h3>
-
-                                <div class="card-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                                    <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body table-responsive p-0">
-
-                            </div>
-
-
-                                <div class="card-body">
-                                    <div v-if="clients.data.length" class="table-responsive">
-                                        <table class="table table-hover text-nowrap">
-                                            <thead>
-                                                <tr>
-                                                <th>Name</th>
-                                                <th>Address</th>
-                                                <th>N. contract</th>
-                                                <th>Enterprise</th>
-                                                <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr v-for="client in clients.data" :key="client.id">
-                                                <td>{{client.name}}</td>
-                                                <td>{{client.address}}</td>
-                                                <td>{{client.contract}}</td>
-                                                <td>{{client.enterprise.name}}</td>
-                                                <td>
-                                                    <a class="text-primary fa fa-eye"></a>
-                                                    <a class="text-success fa fa-pen"></a>
-                                                    <a class="text-danger fa fa-trash" v-on:click="clientSelected=client.id;deleteClients"></a>
-                                                </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div v-else class="alert alert-warning text-center">
-                                        No hay elementos
-                                    </div>
-
-                                    <pagination v-if="clients.data.length" class="pt-4"
-                                        :limit="5"
-                                        :data="clients"
-                                        @pagination-change-page="getClients">
-                                    </pagination>
-                                </div>
-                            <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                </div>
-
+            <div v-else class="alert alert-warning text-center">
+                No hay ningún elemento para mostrar
             </div>
-            <div class="card-footer">
-                Footer
-            </div>
+        </div>
+        <!-- /.card-body -->
+
+        <div class="card-footer">
+            Footer
+        </div>
 
     </div>
 </template>
 <script>
-    export default {
+    import ClientItemComponent from "./ClientItemComponent";
+    import ClientDetailsComponent from "./ClientDetailsComponent";
+    import ClientFormComponent from "./ClientFormComponent";
 
-        mounted(){
+    export default {
+        components: {ClientFormComponent, ClientDetailsComponent,ClientItemComponent},
+        mounted() {
             this.getClients()
         },
 
-        data(){
+        data() {
             return {
-                clientSelected:'',
                 clients: {data: []},
+                loaded: false,
+                showAdd: false,
             }
         },
-        methods:{
-            getClients(page=1) {
+        methods: {
+            getClients(page = 1) {
+                this.loaded = false;
                 let url = '/cmsapi/clients?page=' + page;
-
                 axios.get(url)
-                .then(response => {
-                    this.clients = response.data
-                })
-                .catch(err => {
-                    console.error(err);
-                });
-            },
-            deleteClients: function(event) {
-                alert(this.clientSelected)
-                console.log(2222,client)
-                let url = '/api/clients/'+client ;
-
-                axios.delete(url)
                     .then(response => {
-                        console.log(response.data)
+                        this.clients = response.data
+                        this.loaded = true;
                     })
                     .catch(err => {
                         console.error(err);
                     });
             },
-
+            showForm(action, client = null) {
+                this.$refs.formClient.showForm(action, client)
+            },
+            showDetails(item) {
+                this.$refs.detailsClient.openDetails(item)
+            },
         }
     }
 </script>

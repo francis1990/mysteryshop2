@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
-use Illuminate\Http\Request;
 use App\Http\Resources\ClientResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,7 +18,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return ClientResource::collection(Client::orderBy('id', 'DESC')->paginate());
+        return ClientResource::collection(Client::paginate());
     }
 
     /**
@@ -63,7 +62,7 @@ class ClientController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     *en
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
@@ -72,5 +71,10 @@ class ClientController extends Controller
         $client->delete();
 
         return response()->json(['messenge'=>'OK'], 200);
+    }
+
+    public function getAll()
+    {
+        return ClientResource::collection(Client::orderBy('name')->get());
     }
 }

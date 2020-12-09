@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="modalFormEstablishment">
+    <div class="modal fade" id="modalFormClient">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -17,36 +17,36 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="name">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="Name" v-model="form.name"
-                                           :class="errors.name ? 'is-invalid':''" id="name">
+                                    <input type="text" id="name" class="form-control" placeholder="Name" v-model="form.name"
+                                           :class="errors.name ? 'is-invalid':''">
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="address">Address</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="Address" v-model="form.address"
-                                           :class="errors.address ? 'is-invalid':''" id="address">
+                                    <input type="text" class="form-control" placeholder="Address" id="address"
+                                           :class="errors.address ? 'is-invalid':''"
+                                           v-model="form.address">
                                     <span v-if="errors.address" class="invalid-feedback">{{errors.address[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="establishment_type_id">Type</label>
+                                <label class="col-sm-2 control-label" for="contract_number">No Contract</label>
                                 <div class="col-sm-10">
-                                    <select name="establishment_type_id" class="form-control"  v-model="form.establishment_type_id"
-                                            :class="errors.establishment_type_id ? 'is-invalid':''" id="establishment_type_id">
-                                        <option v-for="type in types.data" :value="type.id">{{type.name}}</option>
-                                    </select>
-                                    <span v-if="errors.establishment_type_id" class="invalid-feedback">{{errors.establishment_type_id[0]}}</span>
+                                    <input type="text" class="form-control" placeholder="No Contract" id="contract_number"
+                                           :class="errors.contract_number ? 'is-invalid':''"
+                                           v-model="form.contract_number">
+                                    <span v-if="errors.contract_number" class="invalid-feedback">{{errors.contract_number[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="client_id">Client</label>
+                                <label class="col-sm-2 control-label" for="enterprise_id">Enterprise</label>
                                 <div class="col-sm-10">
-                                    <select name="client_id" class="form-control" id="client_id" v-model="form.client_id" :class="errors.client_id ? 'is-invalid':''">
-                                        <option v-for="client in clients.data" :value="client.id">{{client.name}}</option>
+                                    <select name="enterprise_id" class="form-control"  id="enterprise_id" v-model="form.enterprise_id" :class="errors.enterprise_id ? 'is-invalid':''">
+                                        <option v-for="enterprise in enterprises.data" :value="enterprise.id">{{enterprise.name}}</option>
                                     </select>
-                                    <span v-if="errors.client_id" class="invalid-feedback">{{errors.client_id[0]}}</span>
+                                    <span v-if="errors.enterprise_id" class="invalid-feedback">{{errors.enterprise_id[0]}}</span>
                                 </div>
                             </div>
                         </div>
@@ -54,8 +54,8 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" @click="closeForm">Cancelar</button>
-                    <a v-if="action==='update'" @click="updateEstablishmenType" class="btn btn-primary">Guardar</a>
-                    <a v-else @click="createEstablishmenType" class="btn btn-primary">Guardar</a>
+                    <a v-if="action==='update'" @click="updateClient" class="btn btn-primary">Guardar</a>
+                    <a v-else @click="createClient" class="btn btn-primary">Guardar</a>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -71,10 +71,9 @@
 
 
     export default {
-        name: "EstablishmentFormComponent",
+        name: "ClientFormComponent",
         mounted() {
-            this.getClients()
-            this.getTypes()
+            this.getEnterprises()
         },
         data() {
             return {
@@ -85,36 +84,35 @@
                     id: '',
                     name: '',
                     address: '',
-                    client_id: '',
-                    establishment_type_id: '',
+                    contract_number: '',
+                    enterprise_id: '',
                 },
                 errors: [],
-                clients: [],
-                types: [],
+                enterprises: [],
             }
         },
         methods: {
-            showForm(action, establishment = null) {
+            showForm(action, client = null) {
                 this.clearForm();
                 this.action = action;
                 this.title = action === 'update' ? 'Edit' : 'Create';
-                if (establishment) {
+                if (client) {
                     this.form = {
-                        id: establishment.id,
-                        name: establishment.name,
-                        address: establishment.address,
-                        client_id: establishment.client_id,
-                        establishment_type_id: establishment.establishment_type_id,
+                        id: client.id,
+                        name: client.name,
+                        address: client.address,
+                        contract_number: client.contract,
+                        enterprise_id: client.enterprise.id,
                     }
                 }
-                $('#modalFormEstablishment').modal({backdrop: 'static', keyboard: false, 'show': true})
+                $('#modalFormClient').modal({backdrop: 'static', keyboard: false,'show':true})
             },
-            createEstablishmenType() {
-                let url = `cmsapi/establishments`;
+            createClient() {
+                let url = `cmsapi/clients`;
                 axios.post(url, this.form)
                     .then(response => {
                         this.closeForm();
-                        this.$alert("The element have been created", "Information", "success")
+                        this.$alert("the element have been created", "Information", "success")
                         this.$emit('loadData')
                     })
                     .catch(error => {
@@ -122,13 +120,12 @@
                         this.errors = error.response.data.errors;
                     });
             },
-            updateEstablishmenType() {
-                console.log(this.form.id,this.form)
-                let url = `cmsapi/establishments/${this.form.id}`;
+            updateClient() {
+                let url = `cmsapi/clients/${this.form.id}`;
                 axios.put(url, this.form)
                     .then(response => {
                         this.closeForm();
-                        this.$alert("The element have been updated", "Information", "success")
+                        this.$alert("the element have been updated", "Information", "success")
                         this.$emit('loadData')
                     })
                     .catch(error => {
@@ -143,31 +140,20 @@
                     id: '',
                     name: '',
                     address: '',
-                    client_id: '',
-                    establishment_type_id: '',
+                    contract_number: '',
+                    enterprise_id: '',
                 };
                 this.errors = []
             },
             closeForm() {
                 this.clearForm()
-                $('#modalFormEstablishment').modal('hide');
+                $('#modalFormClient').modal('hide');
             },
-            getClients(page = 1) {
-                let url = '/cmsapi/list/clients';
+            getEnterprises(page = 1) {
+                let url = '/cmsapi/list/enterprises';
                 axios.get(url)
                     .then(response => {
-                        this.clients = response.data
-                        console.log(this.clients)
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    })
-            },
-            getTypes(page = 1) {
-                let url = '/cmsapi/list/establishment/types';
-                axios.get(url)
-                    .then(response => {
-                        this.types = response.data
+                        this.enterprises = response.data
                     })
                     .catch(err => {
                         console.error(err);

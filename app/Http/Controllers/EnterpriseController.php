@@ -74,4 +74,9 @@ class EnterpriseController extends Controller
         $enterprise=Enterprise::findOrFail($id);
         return new Response($enterprise->delete());
     }
+
+    public function getAll()
+    {
+        return EnterpriseResource::collection(Enterprise::orderBy('name')->get());
+    }
 }

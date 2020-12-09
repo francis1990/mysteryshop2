@@ -8,7 +8,6 @@
                 <span v-show="enterprieses.total" class="right badge badge-dark">{{ enterprieses.total }}</span>
             </h4>
         </div>
-
         <div class="card-body">
             <button id="show-modal" class="btn btn-primary btn-sm pull-right" @click="showForm('add')">Add
             </button>
@@ -47,7 +46,6 @@
     </div>
     <!-- /.card -->
 </template>
-
 <script>
     import EnterpriseItemComponent from "./EnterpriseItemComponent";
     import EnterpriseDetailsComponent from "./EnterpriseDetailsComponent";
@@ -85,6 +83,5 @@
                 this.$refs.detailsEnterprise.openDetails(item)
             },
         },
-
     }
 </script>
