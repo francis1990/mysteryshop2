@@ -15,38 +15,43 @@
                                 {{errorMessage}}
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="name">Name</label>
+                                <label class="col control-label" for="name">Name</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Name" v-model="form.name"
-                                           :class="errors.name ? 'is-invalid':''" id="name">
+                                           :class="errors.name ? 'is-invalid':''" id="name" required>
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="address">Address</label>
+                                <label class="col control-label" for="address">Address</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Address" v-model="form.address"
-                                           :class="errors.address ? 'is-invalid':''" id="address">
+                                           :class="errors.address ? 'is-invalid':''" id="address" required>
                                     <span v-if="errors.address" class="invalid-feedback">{{errors.address[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="establishment_type_id">Type</label>
+                                <label class="col control-label" for="establishment_type_id">Type</label>
                                 <div class="col-sm-10">
-                                    <select name="establishment_type_id" class="form-control"  v-model="form.establishment_type_id"
-                                            :class="errors.establishment_type_id ? 'is-invalid':''" id="establishment_type_id">
+                                    <select name="establishment_type_id" class="form-control"
+                                            v-model="form.establishment_type_id"
+                                            :class="errors.establishment_type_id ? 'is-invalid':''"
+                                            id="establishment_type_id">
                                         <option v-for="type in types.data" :value="type.id">{{type.name}}</option>
                                     </select>
                                     <span v-if="errors.establishment_type_id" class="invalid-feedback">{{errors.establishment_type_id[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="client_id">Client</label>
+                                <label class="col control-label" for="client_id">Client</label>
                                 <div class="col-sm-10">
-                                    <select name="client_id" class="form-control" id="client_id" v-model="form.client_id" :class="errors.client_id ? 'is-invalid':''">
-                                        <option v-for="client in clients.data" :value="client.id">{{client.name}}</option>
+                                    <select name="client_id" class="form-control" id="client_id"
+                                            v-model="form.client_id" :class="errors.client_id ? 'is-invalid':''">
+                                        <option v-for="client in clients.data" :value="client.id">{{client.name}}
+                                        </option>
                                     </select>
-                                    <span v-if="errors.client_id" class="invalid-feedback">{{errors.client_id[0]}}</span>
+                                    <span v-if="errors.client_id"
+                                          class="invalid-feedback">{{errors.client_id[0]}}</span>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +128,7 @@
                     });
             },
             updateEstablishmenType() {
-                console.log(this.form.id,this.form)
+                console.log(this.form.id, this.form)
                 let url = `cmsapi/establishments/${this.form.id}`;
                 axios.put(url, this.form)
                     .then(response => {

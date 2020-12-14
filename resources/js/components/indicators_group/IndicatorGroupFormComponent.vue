@@ -15,18 +15,18 @@
                                 {{errorMessage}}
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="name">Name</label>
+                                <label class="col control-label" for="name">Name</label>
                                 <div class="col-sm-10">
                                     <input type="text" id="name" class="form-control" placeholder="Name" v-model="form.name"
-                                           :class="errors.name ? 'is-invalid':''">
+                                           :class="errors.name ? 'is-invalid':''" required>
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="description">Description</label>
+                                <label class="col control-label" for="description">Description</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Address" id="description"
-                                           :class="errors.description ? 'is-invalid':''"
+                                           :class="errors.description ? 'is-invalid':''" required
                                            v-model="form.description">
                                     <span v-if="errors.description" class="invalid-feedback">{{errors.description[0]}}</span>
                                 </div>
@@ -45,13 +45,9 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-
-
 </template>
 
 <script>
-
-
     export default {
         name: "IndicatorGroupFormComponent",
         data() {

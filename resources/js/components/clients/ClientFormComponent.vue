@@ -15,35 +15,36 @@
                                 {{errorMessage}}
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="name">Name</label>
+                                <label class="col control-label" for="name">Name</label>
                                 <div class="col-sm-10">
                                     <input type="text" id="name" class="form-control" placeholder="Name" v-model="form.name"
-                                           :class="errors.name ? 'is-invalid':''">
+                                           :class="errors.name ? 'is-invalid':''" required>
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="address">Address</label>
+                                <label class="col control-label" for="address">Address</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Address" id="address"
-                                           :class="errors.address ? 'is-invalid':''"
+                                           :class="errors.address ? 'is-invalid':''" required
                                            v-model="form.address">
                                     <span v-if="errors.address" class="invalid-feedback">{{errors.address[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="contract_number">No Contract</label>
+                                <label class="col control-label" for="contract_number">No Contract</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="No Contract" id="contract_number"
-                                           :class="errors.contract_number ? 'is-invalid':''"
+                                           :class="errors.contract_number ? 'is-invalid':''" required
                                            v-model="form.contract_number">
                                     <span v-if="errors.contract_number" class="invalid-feedback">{{errors.contract_number[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="enterprise_id">Enterprise</label>
+                                <label class="col control-label" for="enterprise_id">Enterprise</label>
                                 <div class="col-sm-10">
-                                    <select name="enterprise_id" class="form-control"  id="enterprise_id" v-model="form.enterprise_id" :class="errors.enterprise_id ? 'is-invalid':''">
+                                    <select name="enterprise_id" class="form-control"  id="enterprise_id" v-model="form.enterprise_id"
+                                            :class="errors.enterprise_id ? 'is-invalid':''" required>
                                         <option v-for="enterprise in enterprises.data" :value="enterprise.id">{{enterprise.name}}</option>
                                     </select>
                                     <span v-if="errors.enterprise_id" class="invalid-feedback">{{errors.enterprise_id[0]}}</span>

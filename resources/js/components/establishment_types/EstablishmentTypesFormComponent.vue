@@ -15,9 +15,9 @@
                                 {{errorMessage}}
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Name</label>
+                                <label class="col control-label">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="Name" v-model="form.name"
+                                    <input type="text" class="form-control" placeholder="Name" required v-model="form.name"
                                            :class="errors.name ? 'is-invalid':''">
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>

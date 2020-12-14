@@ -52,7 +52,6 @@
     import EstablishmentDetailsComponent from "./EstablishmentDetailsComponent";
     import EstablishmentFormComponent from "./EstablishmentFormComponent";
     import EstablishmentItemComponent from "./EstablishmentItemComponent";
-
     export default {
         components: {EstablishmentFormComponent, EstablishmentDetailsComponent, EstablishmentItemComponent},
         mounted() {

@@ -15,19 +15,19 @@
                                 {{errorMessage}}
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Name</label>
+                                <label class="col control-label">Name</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Name" v-model="form.name"
-                                           :class="errors.name ? 'is-invalid':''">
+                                           :class="errors.name ? 'is-invalid':''" required>
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Address</label>
+                                <label class="col control-label">Address</label>
 
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Address"
-                                           :class="errors.address ? 'is-invalid':''"
+                                           :class="errors.address ? 'is-invalid':''" required
                                            v-model="form.address">
                                     <span v-if="errors.address" class="invalid-feedback">{{errors.address[0]}}</span>
                                 </div>

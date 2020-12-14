@@ -17,7 +17,8 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="name">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" id="name" class="form-control" placeholder="Name" v-model="form.name"
+                                    <input type="text" id="name" class="form-control" placeholder="Name"
+                                           v-model="form.name" required
                                            :class="errors.name ? 'is-invalid':''">
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
@@ -65,7 +66,7 @@
                         name: item.name,
                     }
                 }
-                $('#modalFormSurvey').modal({backdrop: 'static', keyboard: false,'show':true})
+                $('#modalFormSurvey').modal({backdrop: 'static', keyboard: false, 'show': true})
             },
             createItem() {
                 let url = `/cmsapi/surveys`;

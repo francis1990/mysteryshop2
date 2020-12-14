@@ -19,4 +19,5 @@ Route::middleware(['auth'])->name('cmsapi.')->group(function () {
     ]);
     Route::get('/list/clients', 'ClientController@getAll');
     Route::get('/list/establishment/types', 'EstablishmentTypeController@getAll');
+    Route::get('/list/enterprises', 'EnterpriseController@getAll');
 });

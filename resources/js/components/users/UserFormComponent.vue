@@ -15,15 +15,15 @@
                                 {{errorMessage}}
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Name</label>
+                                <label class="col control-label">Name</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="Name" v-model="form.name"
-                                           :class="errors.name ? 'is-invalid':''">
+                                           :class="errors.name ? 'is-invalid':''" required>
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Surname</label>
+                                <label class="col control-label">Surname</label>
 
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" placeholder="SurName"
@@ -33,11 +33,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Email</label>
+                                <label class="col control-label">Email</label>
 
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control" :class="errors.email ? 'is-invalid':''"
-                                           placeholder="Email" v-model="form.email">
+                                           placeholder="Email" v-model="form.email" required>
                                     <span v-if="errors.email" class="invalid-feedback">{{errors.email[0]}}</span>
                                 </div>
                             </div>
