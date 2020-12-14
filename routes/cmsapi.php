@@ -17,4 +17,6 @@ Route::middleware(['auth'])->name('cmsapi.')->group(function () {
         'indicator_groups' => 'IndicatorGroupController',
         'surveys' => 'SurveyController'
     ]);
+    Route::get('/list/clients', 'ClientController@getAll');
+    Route::get('/list/establishment/types', 'EstablishmentTypeController@getAll');
 });

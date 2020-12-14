@@ -20,7 +20,7 @@ class IndicatorGroupController extends Controller
      */
     public function index()
     {
-        return IndicatorGroupResource::collection(Indicator::orderBy('name')->paginate());
+        return IndicatorGroupResource::collection(IndicatorGroup::orderBy('name')->paginate());
     }
 
 

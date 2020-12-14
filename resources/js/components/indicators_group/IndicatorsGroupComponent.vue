@@ -1,93 +1,85 @@
 <template>
-<div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Responsive Hover Table</h3>
-
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body table-responsive p-0">
-
-              </div>
-
-
-                <div class="card-body">
-                    <div v-if="indicators_group.data.length" class="table-responsive">
-                        <table class="table table-hover text-nowrap">
-                            <thead>
-                                <tr>
-                                <th>Name</th>
-                                <th>description</th>
-                                <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="indicator in indicators_group.data" :key="indicator.id">
-                                <td>{{indicator.name}}</td>
-                                <td>{{indicator.description}}</td>
-                                <td>
-                                    <a class="text-primary fa fa-eye"></a>
-                                    <a class="text-success fa fa-pen"></a>
-                                    <a class="text-danger fa fa-trash"></a>
-                                </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div v-else class="alert alert-warning text-center">
-                        No hay elementos
-                    </div>
-
-                    <pagination v-if="indicators_group.data.length" class="pt-4"
-                        :limit="5"
-                        :data="indicators_group"
-                        @pagination-change-page="getIndicators">
-                    </pagination>
-                </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
+    <div class="card card-info">
+        <!-- Carga de datos -->
+        <div v-if="!loaded" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
+        <div class="card-header">
+            <h4 class="card-title font-weight-bold">Group indicators
+                <span v-show="indicators_group.total" class="right badge badge-dark">{{ indicators_group.total }}</span>
+            </h4>
         </div>
-  <!--   <div class="col-md-8">
-        <h1>Estas en Users</h1>
-        <example-component></example-component>
-    </div> -->
+        <!-- /.card-header -->
+        <div class="card-body">
+            <button id="show-modal" class="btn btn-primary btn-sm pull-right" @click="showForm('add')">Add
+            </button>
+            <indicator-group-form-component @loadData="getIndicatorsGroup(1)" ref="formIndicatorGroup"></indicator-group-form-component>
+            <indicator-group-details-component ref="detailsIndicatorGroup"></indicator-group-details-component>
+            <div class="pt-2">
+                <div v-if="indicators_group.data.length || !loaded" class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>description</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <indicator-group-item-component
+                            v-for="item in indicators_group.data"
+                            v-bind:indicator_group="item"
+                            v-bind:key="item.id"
+                            @loadData="getIndicatorsGroup(1)"
+                            @details="showDetails(item)"
+                            @updateItem="showForm('update',item)">
+                        </indicator-group-item-component>
+                        </tbody>
+                    </table>
+                    <pagination :limit="5" :data="indicators_group" @pagination-change-page="getIndicatorsGroup"></pagination>
+                </div>
+                <div v-else class="alert alert-warning text-center">
+                    No hay ningún elemento para mostrar
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
 </template>
 <script>
+    import IndicatorGroupItemComponent from "./IndicatorGroupItemComponent";
+    import IndicatorGroupDetailsComponent from "./IndicatorGroupDetailsComponent";
+    import IndicatorGroupFormComponent from "./IndicatorGroupFormComponent";
+
     export default {
-
-        mounted(){
-            this.getIndicators()
+        components: {IndicatorGroupItemComponent, IndicatorGroupDetailsComponent,IndicatorGroupFormComponent},
+        mounted() {
+            this.getIndicatorsGroup()
         },
-
-        data(){
+        data() {
             return {
                 indicators_group: {data: []},
+                loaded: false,
+                showAdd: false,
             }
         },
-        methods:{
-            getIndicators(page=1) {
-                let url = '/cmsapi/indicator_groups?page=' + page;
-
+        methods: {
+            getIndicatorsGroup(page = 1) {
+                this.loaded = false;
+                let url = '/cmsapi/indicator_groups/?page=' + page;
                 axios.get(url)
-                .then(response => {
-                    this.indicators_group = response.data
-                })
-                .catch(err => {
-                    console.error(err);
-                });
+                    .then(response => {
+                        this.indicators_group = response.data
+                        this.loaded = true;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+            showForm(action, item = null) {
+                this.$refs.formIndicatorGroup.showForm(action, item)
+            },
+            showDetails(item) {
+                this.$refs.detailsIndicatorGroup.openDetails(item)
             },
         }
     }

@@ -103,8 +103,8 @@
                         id: establishment.id,
                         name: establishment.name,
                         address: establishment.address,
-                        client_id: establishment.client_id,
-                        establishment_type_id: establishment.establishment_type_id,
+                        client_id: establishment.client.id,
+                        establishment_type_id: establishment.type.id,
                     }
                 }
                 $('#modalFormEstablishment').modal({backdrop: 'static', keyboard: false, 'show': true})
@@ -157,7 +157,6 @@
                 axios.get(url)
                     .then(response => {
                         this.clients = response.data
-                        console.log(this.clients)
                     })
                     .catch(err => {
                         console.error(err);

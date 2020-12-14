@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" id="modalFormEstablishmenType">
+    <div class="modal fade" id="modalFormSurvey">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -15,9 +15,9 @@
                                 {{errorMessage}}
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Name</label>
+                                <label class="col-sm-2 control-label" for="name">Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="Name" v-model="form.name"
+                                    <input type="text" id="name" class="form-control" placeholder="Name" v-model="form.name"
                                            :class="errors.name ? 'is-invalid':''">
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
@@ -26,9 +26,9 @@
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" @click="closeForm">Cancelar</button>
-                    <a v-if="action==='update'" @click="updateEstablishmenType" class="btn btn-primary">Guardar</a>
-                    <a v-else @click="createEstablishmenType" class="btn btn-primary">Guardar</a>
+                    <button type="button" class="btn btn-default" @click="closeForm">Cancel</button>
+                    <a v-if="action==='update'" @click="updateItem" class="btn btn-primary">Save</a>
+                    <a v-else @click="createItem" class="btn btn-primary">Save</a>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -37,9 +37,10 @@
     </div>
     <!-- /.modal -->
 </template>
+
 <script>
     export default {
-        name: "EstablishmenTypeFormComponent",
+        name: "SurveyFormComponent",
         data() {
             return {
                 errorMessage: '',
@@ -49,24 +50,25 @@
                     id: '',
                     name: '',
                 },
-                errors: []
+                errors: [],
+                enterprises: [],
             }
         },
         methods: {
-            showForm(action, establishment_type = null) {
+            showForm(action, item = null) {
                 this.clearForm();
                 this.action = action;
                 this.title = action === 'update' ? 'Edit' : 'Create';
-                if (establishment_type) {
+                if (item) {
                     this.form = {
-                        id: establishment_type.id,
-                        name: establishment_type.name,
+                        id: item.id,
+                        name: item.name,
                     }
                 }
-                $('#modalFormEstablishmenType').modal({backdrop: 'static', keyboard: false,'show':true})
+                $('#modalFormSurvey').modal({backdrop: 'static', keyboard: false,'show':true})
             },
-            createEstablishmenType() {
-                let url = `cmsapi/establishment_types`;
+            createItem() {
+                let url = `/cmsapi/surveys`;
                 axios.post(url, this.form)
                     .then(response => {
                         this.closeForm();
@@ -78,8 +80,8 @@
                         this.errors = error.response.data.errors;
                     });
             },
-            updateEstablishmenType() {
-                let url = `cmsapi/establishment_types/${this.form.id}`;
+            updateItem() {
+                let url = `/cmsapi/surveys/${this.form.id}`;
                 axios.put(url, this.form)
                     .then(response => {
                         this.closeForm();
@@ -102,8 +104,8 @@
             },
             closeForm() {
                 this.clearForm()
-                $('#modalFormEstablishmenType').modal('hide');
-            }
+                $('#modalFormSurvey').modal('hide');
+            },
         }
     }
 </script>

@@ -1,91 +1,84 @@
-<template>
-<div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Responsive Hover Table</h3>
-
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body table-responsive p-0">
-
-              </div>
-
-
-                <div class="card-body">
-                    <div v-if="surveys.data.length" class="table-responsive">
-                        <table class="table table-hover text-nowrap">
-                            <thead>
-                                <tr>
-                                <th>Name</th>
-                                <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="model in surveys.data" :key="model.id">
-                                <td>{{model.name}}</td>
-                                <td>
-                                    <a class="text-primary fa fa-eye"></a>
-                                    <a class="text-success fa fa-pen"></a>
-                                    <a class="text-danger fa fa-trash"></a>
-                                </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div v-else class="alert alert-warning text-center">
-                        No hay elementos
-                    </div>
-
-                    <pagination v-if="surveys.data.length" class="pt-4"
-                        :limit="5"
-                        :data="surveys"
-                        @pagination-change-page="getSurveys">
-                    </pagination>
-                </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
+<template   >
+    <div class="card card-info">
+        <!-- Carga de datos -->
+        <div v-if="!loaded" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
+        <div class="card-header">
+            <h4 class="card-title font-weight-bold">Surveys
+                <span v-show="surveys.total" class="right badge badge-dark">{{ surveys.total }}</span>
+            </h4>
         </div>
-  <!--   <div class="col-md-8">
-        <h1>Estas en Users</h1>
-        <example-component></example-component>
-    </div> -->
+        <!-- /.card-header -->
+        <div class="card-body">
+            <button id="show-modal" class="btn btn-primary btn-sm pull-right" @click="showForm('add')">Add
+            </button>
+            <survey-form-component @loadData="getSurveys(1)" ref="formSurvey"></survey-form-component>
+            <survey-details-component ref="detailsSurvey"></survey-details-component>
+            <div class="pt-2">
+                <div v-if="surveys.data.length || !loaded" class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <survey-item-component
+                            v-for="item in surveys.data"
+                            v-bind:survey="item"
+                            v-bind:key="item.id"
+                            @loadData="getSurveys(1)"
+                            @details="showDetails(item)"
+                            @updateItem="showForm('update',item)">
+                        </survey-item-component>
+                        </tbody>
+                    </table>
+                    <pagination :limit="5" :data="surveys" @pagination-change-page="getSurveys"></pagination>
+                </div>
+                <div v-else class="alert alert-warning text-center">
+                    No hay ningún elemento para mostrar
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <!-- /.card -->
 </template>
 <script>
-    export default {
+    import SurveyItemComponent from "./SurveyItemComponent";
+    import SurveyDetailsComponent from "./SurveyDetailsComponent";
+    import SurveyFormComponent from "./SurveyFormComponent";
 
-        mounted(){
+    export default {
+        components: {SurveyItemComponent, SurveyDetailsComponent, SurveyFormComponent},
+        mounted() {
             this.getSurveys()
         },
-
-        data(){
+        data() {
             return {
                 surveys: {data: []},
+                loaded: false,
+                showAdd: false,
             }
         },
-        methods:{
-            getSurveys(page=1) {
+        methods: {
+            getSurveys(page = 1) {
+                this.loaded = false;
                 let url = '/cmsapi/surveys?page=' + page;
-
                 axios.get(url)
-                .then(response => {
-                    this.surveys = response.data
-                })
-                .catch(err => {
-                    console.error(err);
-                });
+                    .then(response => {
+                        this.surveys = response.data
+                        this.loaded = true;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            },
+            showForm(action, item = null) {
+                this.$refs.formSurvey.showForm(action, item)
+            },
+            showDetails(item) {
+                this.$refs.detailsSurvey.openDetails(item)
             },
         }
     }

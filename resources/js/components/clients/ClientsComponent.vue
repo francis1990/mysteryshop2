@@ -4,7 +4,7 @@
         <div v-if="!loaded" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
 
         <div class="card-header">
-            <h4 class="card-title font-weight-bold">Client
+            <h4 class="card-title font-weight-bold">Clients
                 <span v-show="clients.total" class="right badge badge-dark">{{ clients.total }}</span>
             </h4>
         </div>
@@ -13,41 +13,37 @@
             </button>
             <client-form-component @loadData="getClients(1)" ref="formClient"></client-form-component>
             <client-details-component ref="detailsClient"></client-details-component>
-            <div v-if="clients.data.length || !loaded" class="table-responsive pt-2">
-                <table class="table table-hover text-nowrap">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>N. contract</th>
-                        <th>Enterprise</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <client-item-component
-                        v-for="item in clients.data"
-                        v-bind:client="item"
-                        v-bind:key="item.id"
-                        @loadData="getClients(1)"
-                        @details="showDetails(item)"
-                        @updateClient="showForm('update',item)">
-                    </client-item-component>
-                    </tbody>
-                </table>
-                <pagination :limit="5" :data="clients" @pagination-change-page="getClients"></pagination>
-            </div>
-
-            <div v-else class="alert alert-warning text-center">
-                No hay ningún elemento para mostrar
+            <div class="pt-2">
+                <div v-if="clients.data.length || !loaded" class="table-responsive">
+                    <table class="table table-hover text-nowrap">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>N. contract</th>
+                            <th>Enterprise</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <client-item-component
+                            v-for="item in clients.data"
+                            v-bind:client="item"
+                            v-bind:key="item.id"
+                            @loadData="getClients(1)"
+                            @details="showDetails(item)"
+                            @updateClient="showForm('update',item)">
+                        </client-item-component>
+                        </tbody>
+                    </table>
+                    <pagination :limit="5" :data="clients" @pagination-change-page="getClients"></pagination>
+                </div>
+                <div v-else class="alert alert-warning text-center">
+                    No hay ningún elemento para mostrar
+                </div>
             </div>
         </div>
         <!-- /.card-body -->
-
-        <div class="card-footer">
-            Footer
-        </div>
-
     </div>
 </template>
 <script>
@@ -56,7 +52,7 @@
     import ClientFormComponent from "./ClientFormComponent";
 
     export default {
-        components: {ClientFormComponent, ClientDetailsComponent,ClientItemComponent},
+        components: {ClientFormComponent, ClientDetailsComponent, ClientItemComponent},
         mounted() {
             this.getClients()
         },
