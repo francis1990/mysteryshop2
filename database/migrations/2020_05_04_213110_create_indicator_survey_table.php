@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSurveyIndicatorTable extends Migration
+class CreateIndicatorSurveyTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,19 @@ class CreateSurveyIndicatorTable extends Migration
      */
     public function up()
     {
-        Schema::create('survey_indicator', function (Blueprint $table) {
+        Schema::create('indicator_survey', function (Blueprint $table) {
             $table->id();
+            $table->double('min');
+            $table->double('max');
+            $table->double('step');
             $table->unsignedBigInteger('indicator_id');
             $table->foreign('indicator_id')
                 ->references('id')
                 ->on('indicators');
+            $table->unsignedBigInteger('indicator_groups_id');
+            $table->foreign('indicator_groups_id')
+                ->references('id')
+                ->on('indicator_groups');
             $table->unsignedBigInteger('survey_id');
             $table->foreign('survey_id')
                 ->references('id')
@@ -34,6 +41,6 @@ class CreateSurveyIndicatorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('survey_indicator');
+        Schema::dropIfExists('indicator_survey');
     }
 }

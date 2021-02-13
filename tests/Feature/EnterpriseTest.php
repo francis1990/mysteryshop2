@@ -69,7 +69,7 @@ class EnterpriseTest extends TestCase
                 'address' => $enterprise->address
             ]);
 
-        $response->assertStatus(201)
+        $response->assertStatus(200)
             ->assertJsonStructure(['data']);
     }
 

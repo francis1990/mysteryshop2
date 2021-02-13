@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Models\Enterprise;
-use App\Models\DepartmentEvaluation;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\EstablishmentEvaluation;
 use Illuminate\Notifications\Notifiable;
@@ -50,10 +49,5 @@ class User extends Authenticatable
     public function establishmentEvaluations()
     {
         return $this->hasMany(EstablishmentEvaluation::class, 'user_id', 'id');
-    }
-
-    public function departmentEvaluations()
-    {
-        return $this->hasMany(DepartmentEvaluation::class, 'user_id', 'id');
     }
 }

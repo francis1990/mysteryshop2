@@ -1,9 +1,10 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/** @var Factory $factory */
 
 use App\Models\Client;
 use App\Models\Enterprise;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -15,12 +16,3 @@ $factory->define(Client::class, function (Faker $faker) {
         'enterprise_id' => factory(Enterprise::class)->create()->id
     ];
 });
-
-/* $factory->state(Client::class, 'withEnterprise', function ($faker) {
-    return [
-        'name' => $faker->name,
-        'address' => $faker->address,
-        'contract_number' => Str::random(8),
-    ];
-}); */
-

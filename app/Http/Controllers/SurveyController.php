@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSurveyRequest;
 use App\Http\Resources\SurveyResource;
 use App\Models\Survey;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
@@ -49,7 +50,7 @@ class SurveyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  Survey  $survey
      * @return JsonResource
      */
@@ -63,8 +64,9 @@ class SurveyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Survey  $survey
+     * @param Survey $survey
      * @return Response
+     * @throws Exception
      */
     public function destroy(Survey $survey)
     {

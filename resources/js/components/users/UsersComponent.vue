@@ -20,6 +20,7 @@
                             <th>Name</th>
                             <th>Surname</th>
                             <th>Email</th>
+                            <th>Enterprise</th>
                             <th>Actions</th>
                         </tr>
                         </thead>

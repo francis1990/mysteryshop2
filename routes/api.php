@@ -20,16 +20,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResources([
-    'users' => 'UserController',
-    'enterprises' => 'EnterpriseController',
     'clients' => 'ClientController',
+    'enterprises' => 'EnterpriseController',
     'establishment_types' => 'EstablishmentTypeController',
     'establishments' => 'EstablishmentController',
-    'departments' => 'DepartmentController',
     'establishment_evaluations' => 'EstablishmentEvaluationController',
-    'department_evaluations' => 'DepartmentEvaluationController',
     'indicators' => 'IndicatorController',
     'indicator_groups' => 'IndicatorGroupController',
-    'surveys' => 'SurveyController'
+    'surveys' => 'SurveyController',
+    'users' => 'UserController'
 ]);
 

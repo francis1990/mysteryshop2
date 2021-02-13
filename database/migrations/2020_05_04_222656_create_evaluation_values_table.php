@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEvaluationEstablishmentValuesTable extends Migration
+class CreateEvaluationValuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,18 @@ class CreateEvaluationEstablishmentValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('evaluation_establishment_values', function (Blueprint $table) {
+        Schema::create('evaluation_values', function (Blueprint $table) {
             $table->id();
             $table->integer('value');
             $table->text('comment');
-            $table->unsignedBigInteger('indicator_id');
-            $table->foreign('indicator_id')
+            $table->unsignedBigInteger('indicator_survey_id');
+            $table->foreign('indicator_survey_id')
                 ->references('id')
-                ->on('indicators');
-            $table->unsignedBigInteger('evaluations_id');
-            $table->foreign('evaluations_id')
+                ->on('indicator_survey');
+            $table->unsignedBigInteger('establishment_evaluations_id');
+            $table->foreign('establishment_evaluations_id')
                 ->references('id')
                 ->on('establishment_evaluations');
-            $table->unsignedBigInteger('survey_id');
-            $table->foreign('survey_id')
-                ->references('id')
-                ->on('surveys');
             $table->timestamps();
         });
     }
@@ -40,6 +36,6 @@ class CreateEvaluationEstablishmentValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evaluation_establishment_values');
+        Schema::dropIfExists('evaluation_values');
     }
 }

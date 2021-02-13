@@ -65,7 +65,7 @@ class IndicatorTest extends TestCase
                 'description' => $client->description."_".Str::random(2),
             ]);
 
-        $response->assertStatus(201)
+        $response->assertStatus(200)
             ->assertJsonStructure(['data']);
     }
 

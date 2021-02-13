@@ -1,11 +1,12 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/** @var Factory $factory */
 
 use App\Models\Establishment;
 use Faker\Generator as Faker;
 use App\Models\EstablishmentEvaluation;
 use App\User;
+use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(EstablishmentEvaluation::class, function (Faker $faker) {
     return [

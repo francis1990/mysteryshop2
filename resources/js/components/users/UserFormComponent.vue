@@ -41,13 +41,25 @@
                                     <span v-if="errors.email" class="invalid-feedback">{{errors.email[0]}}</span>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col control-label" for="enterprise_id">Enterprise</label>
+                                <div class="col-sm-10">
+                                    <select name="enterprise_id" class="form-control" id="enterprise_id"
+                                            v-model="form.enterprise_id" :class="errors.enterprise_id ? 'is-invalid':''">
+                                        <option v-for="enterprise in enterprises.data" :value="enterprise.id">{{enterprise.name}}
+                                        </option>
+                                    </select>
+                                    <span v-if="errors.enterprise_id"
+                                          class="invalid-feedback">{{errors.enterprise_id[0]}}</span>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" @click="closeForm">Cancelar</button>
-                    <a v-if="action==='update'" @click="updateUser" class="btn btn-primary">Guardar</a>
-                    <a v-else @click="createUser" class="btn btn-primary">Guardar</a>
+                    <button type="button" class="btn btn-default" @click="closeForm">Cancel</button>
+                    <a v-if="action==='update'" @click="updateUser" class="btn btn-primary">Save</a>
+                    <a v-else @click="createUser" class="btn btn-primary">Save</a>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -64,6 +76,9 @@
 
     export default {
         name: "UserFormComponent",
+        mounted() {
+            this.getEnterprises()
+        },
         data() {
             return {
                 errorMessage: '',
@@ -73,9 +88,11 @@
                     id: '',
                     name: '',
                     surname: '',
-                    email: ''
+                    email: '',
+                    enterprise_id: '',
                 },
-                errors: []
+                errors: [],
+                enterprises: [],
             }
         },
         methods: {
@@ -88,7 +105,8 @@
                         id: user.id,
                         name: user.name,
                         surname: user.surname,
-                        email: user.email
+                        email: user.email,
+                        enterprise_id: user.enterprise.id,
                     }
                 }
                 $('#modalFormUser').modal({backdrop: 'static', keyboard: false,'show':true})
@@ -126,14 +144,25 @@
                     id: '',
                     name: '',
                     surname: '',
-                    email: ''
+                    email: '',
+                    enterprise_id: '',
                 };
                 this.errors = []
             },
             closeForm() {
                 this.clearForm()
                 $('#modalFormUser').modal('hide');
-            }
+            },
+            getEnterprises() {
+                let url = '/cmsapi/list/enterprises';
+                axios.get(url)
+                    .then(response => {
+                        this.enterprises = response.data
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
         }
     }
 </script>

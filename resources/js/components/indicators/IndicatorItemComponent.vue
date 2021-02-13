@@ -1,33 +1,27 @@
 <template>
     <tr>
-        <td>{{user.name}}</td>
-        <td>{{user.surname}}</td>
-        <td>{{user.email}}</td>
-        <td v-if="user.enterprise">{{user.enterprise.name}}</td>
-        <td v-else></td>
+        <td>{{indicator.name}}</td>
+        <td>{{indicator.description}}</td>
         <td>
             <a href="#"><i class="text-primary fa fa-eye" @click="$emit('details')"></i></a>
-            <a class="text-success fa fa-pen" @click="$emit('updateUser')"></a>
-            <a class="text-danger fa fa-trash" @click="deleteUser(user.id)" ></a>
+            <a class="text-success fa fa-pen" @click="$emit('updateIndicator')"></a>
+            <a class="text-danger fa fa-trash" @click="deleteIndicator(indicator.id)" ></a>
         </td>
     </tr>
 </template>
 
 <script>
-
-
     export default {
-        name: "UserItemComponent",
-        props: ['user'],
+        name: "IndicatorItemComponent",
+        props: ['indicator'],
         data(){
             return {
-
             }
         },
         methods:{
-            deleteUser(item) {
+            deleteIndicator(item) {
                 this.$confirm("Are you sure do you want delete this item?","Question","question").then(() => {
-                    let url = `/cmsapi/users/${item}`;
+                    let url = `/cmsapi/indicators/${item}`;
                     axios.delete(url)
                         .then(response => {
                             this.$alert("the element have been removed","Information","success" )

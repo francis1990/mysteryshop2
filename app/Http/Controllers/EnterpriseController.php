@@ -21,7 +21,7 @@ class EnterpriseController extends Controller
      */
     public function index()
     {
-        return EnterpriseResource::collection(Enterprise::orderBy('id', 'DESC')->paginate());
+        return EnterpriseResource::collection(Enterprise::orderBy('name')->paginate());
     }
 
     /**
@@ -52,26 +52,25 @@ class EnterpriseController extends Controller
      * Update the specified resource in storage.
      *
      * @param UpdateEnterpriseResquest $request
-     * @param Enterprise $enterprises
+     * @param Enterprise $enterprise
      * @return JsonResource
      */
-    public function update(UpdateEnterpriseResquest $request, Enterprise $enterprises)
+    public function update(UpdateEnterpriseResquest $request, Enterprise $enterprise)
     {
-        $enterprises->fill($request->all());
+        $enterprise->fill($request->all())->save();
 
-        return new EnterpriseResource($enterprises);
+        return new EnterpriseResource($enterprise);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $enterprises
+     * @param Enterprise $enterprise
      * @return Response
      * @throws Exception
      */
-    public function destroy( $id)
+    public function destroy(Enterprise $enterprise)
     {
-        $enterprise=Enterprise::findOrFail($id);
         return new Response($enterprise->delete());
     }
 

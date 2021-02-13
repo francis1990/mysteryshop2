@@ -1,9 +1,9 @@
 <template>
-    <div class="modal fade" id="modalUserDetails">
+    <div class="modal fade" id="modalIndicatorDetails">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">User Details</h4>
+                    <h4 class="modal-title">Indicator Details</h4>
                     <button type="button" class="close" data-dismiss="modal" @click="closeModal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -11,14 +11,9 @@
                 <div class="modal-body">
                     <dl class="dl-horizontal">
                         <dt>Name</dt>
-                        <dd>{{user.name}}</dd>
-                        <dt>Surname</dt>
-                        <dd>{{user.surname}}</dd>
-                        <dt>Email</dt>
-                        <dd>{{user.email}}</dd>
-                        <dt>Enterprise</dt>
-                        <dd v-if="user.enterprise!=null">{{user.enterprise.name}}</dd>
-                        <dd v-else></dd>
+                        <dd>{{enterprise.name}}</dd>
+                        <dt>Description</dt>
+                        <dd>{{enterprise.description}}</dd>
                     </dl>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -35,22 +30,20 @@
 </template>
 
 <script>
-
-
     export default {
-        name: "UserDetailsComponent",
+        name: "IndicatorDetailsComponent",
         data() {
             return {
-                user: []
+                enterprise: []
             }
         },
         methods: {
-            openDetails( user) {
-                this.user = user;
-                $('#modalUserDetails').modal({backdrop: 'static', keyboard: false, 'show': true})
+            openDetails( enterprise) {
+                this.enterprise = enterprise;
+                $('#modalIndicatorDetails').modal({backdrop: 'static', keyboard: false, 'show': true})
             },
             closeModal() {
-                $('#modalUserDetails').modal('hide');
+                $('#modalIndicatorDetails').modal('hide');
             }
         }
     }

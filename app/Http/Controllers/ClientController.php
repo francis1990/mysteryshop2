@@ -7,6 +7,9 @@ use App\Http\Requests\UpdateClientRequest;
 use App\Models\Client;
 use App\Http\Resources\ClientResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
+use Exception;
+
 
 
 class ClientController extends Controller
@@ -18,13 +21,13 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return ClientResource::collection(Client::paginate());
+        return ClientResource::collection(Client::orderBy('name', 'DESC')->paginate());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreClientRequest  $request
      * @return JsonResource
      */
     public function store(StoreClientRequest $request)
@@ -37,7 +40,7 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Client  $client
+     * @param Client $client
      * @return JsonResource
      */
     public function show(Client $client)
@@ -48,8 +51,8 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Client  $client
+     * @param  UpdateClientRequest  $request
+     * @param Client $client
      * @return JsonResource
      */
     public function update(UpdateClientRequest $request, Client $client)
@@ -63,14 +66,14 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *en
-     * @param  \App\Models\Client  $client
-     * @return \Illuminate\Http\Response
+     * @param Client $client
+     * @return Response
+     * @throws Exception
      */
     public function destroy(Client $client)
     {
-        $client->delete();
+        return new Response($client->delete());
 
-        return response()->json(['messenge'=>'OK'], 200);
     }
 
     public function getAll()

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\EstablishmentEvaluation;
 use App\Http\Resources\EstablishmentEvaluationResource;
 use App\Http\Requests\StoreEstablishmentEvaluationRequest;
 use App\Http\Requests\UpdateEstablishmentEvaluationRequest;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 
 
 class EstablishmentEvaluationController extends Controller
@@ -25,20 +27,20 @@ class EstablishmentEvaluationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  StoreEstablishmentEvaluationRequest  $request
      * @return JsonResource
      */
     public function store(StoreEstablishmentEvaluationRequest $request)
     {
-        $newEstabEvaluation = EstablishmentEvaluation::create($request->all());
+        $newEstablishmentEvaluation = EstablishmentEvaluation::create($request->all());
 
-        return new EstablishmentEvaluationResource($newEstabEvaluation);
+        return new EstablishmentEvaluationResource($newEstablishmentEvaluation);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\EstablishmentEvaluation  $establishmentEvaluation
+     * @param EstablishmentEvaluation $establishmentEvaluation
      * @return JsonResource
      */
     public function show(EstablishmentEvaluation $establishmentEvaluation)
@@ -49,8 +51,8 @@ class EstablishmentEvaluationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EstablishmentEvaluation  $establishmentEvaluation
+     * @param  UpdateEstablishmentEvaluationRequest  $request
+     * @param  EstablishmentEvaluation  $establishmentEvaluation
      * @return JsonResource
      */
     public function update(UpdateEstablishmentEvaluationRequest $request, EstablishmentEvaluation $establishmentEvaluation)
@@ -63,13 +65,12 @@ class EstablishmentEvaluationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\EstablishmentEvaluation  $establishmentEvaluation
-     * @return \Illuminate\Http\Response
+     * @param EstablishmentEvaluation $establishmentEvaluation
+     * @return Response
+     * @throws Exception
      */
     public function destroy(EstablishmentEvaluation $establishmentEvaluation)
     {
-        $establishmentEvaluation->delete();
-
-        return response()->json(['messenge'=>'OK'], 200);
+        return new Response($establishmentEvaluation->delete());
     }
 }

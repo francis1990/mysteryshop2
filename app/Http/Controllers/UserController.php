@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return UserResource::collection(User::orderBy('id', 'DESC')->paginate());
+        return UserResource::collection(User::orderBy('name')->paginate());
     }
 
     /**
@@ -43,12 +43,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return JsonResource
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $user=User::findOrFail($id);
         return new UserResource($user);
     }
 
@@ -56,12 +55,11 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param UpdateUserRequest $request
-     * @param int $id
+     * @param \App\User  $user
      * @return JsonResource
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $user=User::findOrFail($id);
         $user->fill($request->all())->save();
 
         return new UserResource($user);
@@ -70,13 +68,12 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\User  $user
      * @return Response
      * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user=User::findOrFail($id);
         return new Response($user->delete());
     }
 }

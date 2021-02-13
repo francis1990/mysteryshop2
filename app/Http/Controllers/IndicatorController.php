@@ -6,7 +6,7 @@ use App\Http\Requests\StoreIndicatorRequest;
 use App\Http\Requests\UpdateIndicatorRequest;
 use App\Http\Resources\IndicatorResource;
 use App\Models\Indicator;
-use Illuminate\Http\Request;
+use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
@@ -55,7 +55,7 @@ class IndicatorController extends Controller
      * @param  Indicator  $indicator
      * @return JsonResource
      */
-    public function update(UpdateIndicatorRequest $request, Indicator $indicator)
+    public function update(UpdateIndicatorRequest $request,Indicator $indicator)
     {
         $indicator->fill($request->all())->save();
 
@@ -65,8 +65,9 @@ class IndicatorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Indicator  $indicator
+     * @param Indicator $indicator
      * @return Response
+     * @throws Exception
      */
     public function destroy(Indicator $indicator)
     {

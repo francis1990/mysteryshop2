@@ -23,6 +23,55 @@
                                     <span v-if="errors.name" class="invalid-feedback">{{errors.name[0]}}</span>
                                 </div>
                             </div>
+                            <div class="card">
+                                <div class="card-header">
+
+                                    <div class="d-flex justify-content-between">
+                                        Indicators
+                                        <button @click="addNode" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-folder"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Special title treatment</h5>
+                                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Special title treatment</h5>
+                                                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="indicators col-6">
+                                        <vue-tree-list
+                                            @click="onClick"
+                                            :model="indicators"
+                                            default-tree-node-name="new node"
+                                            default-leaf-node-name="new leaf">
+                                        </vue-tree-list>
+                                    </div>
+                                    <div class="indicators-values col-6">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Cras justo odio</li>
+                                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                                            <li class="list-group-item">Vestibulum at eros</li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -40,8 +89,13 @@
 </template>
 
 <script>
+    import {VueTreeList, Tree, TreeNode} from 'vue-tree-list'
+
     export default {
         name: "SurveyFormComponent",
+        components: {
+            VueTreeList
+        },
         data() {
             return {
                 errorMessage: '',
@@ -53,9 +107,45 @@
                 },
                 errors: [],
                 enterprises: [],
+                newTree: {},
+                indicators: new Tree([
+                    /*{
+                        name: 'Node 1',
+                        id: 1,
+                        pid: 0,
+                        dragDisabled: true,
+                        children: [
+                            {
+                                name: 'Node 1-2',
+                                id: 2,
+                                isLeaf: true,
+                                pid: 1
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Node 2',
+                        id: 3,
+                        pid: 0,
+                        dragDisabled: true
+                    },
+                    {
+                        name: 'Node 3',
+                        id: 4,
+                        pid: 0
+                    }*/
+                ])
             }
         },
         methods: {
+            addNode: function () {
+                var node = new TreeNode({name: 'new node', isLeaf: false})
+                if (!this.indicators.children) this.indicators.children = []
+                this.indicators.addChildren(node)
+            },
+            onClick(model) {
+                console.log(model)
+            },
             showForm(action, item = null) {
                 this.clearForm();
                 this.action = action;

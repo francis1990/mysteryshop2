@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreIndicatorGroupRequest;
 use App\Http\Requests\UpdateIndicatorGroupRequest;
 use App\Http\Resources\IndicatorGroupResource;
-use App\Models\Indicator;
 use App\Models\IndicatorGroup;
-use Illuminate\Http\Request;
+use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
@@ -56,7 +55,7 @@ class IndicatorGroupController extends Controller
      * @param  IndicatorGroup  $indicatorGroup
      * @return JsonResource
      */
-    public function update(Request $request, IndicatorGroup $indicatorGroup)
+    public function update(UpdateIndicatorGroupRequest $request, IndicatorGroup $indicatorGroup)
     {
         $indicatorGroup->fill($request->all())->save();
 
@@ -66,8 +65,9 @@ class IndicatorGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  IndicatorGroup  $indicatorGroup
+     * @param IndicatorGroup $indicatorGroup
      * @return Response
+     * @throws Exception
      */
     public function destroy(IndicatorGroup $indicatorGroup)
     {
